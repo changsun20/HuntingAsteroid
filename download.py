@@ -152,6 +152,6 @@ if __name__ == '__main__':
             print('{} finished!'.format(obsID))
 
             # Stop the code
-            if index > 5:
+            if index > 99:
                 break
     file.close()
