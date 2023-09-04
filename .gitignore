@@ -163,3 +163,18 @@ cython_debug/
 data/
 pic/
 mastDownload/
+
+# LaTex
+.texpadtmp
+draft*.pdf
+~$figures.pptx
+
+*.synctex(busy)
+*.aux
+*.bbl
+*.blg
+*.log
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.out
