@@ -19,14 +19,14 @@ def read_fits(fileName):
 
 
 # Get the parameter from each line of the tablea1.dat file
-def get_par(line):
+def get_par(line, index):
     obsID = line[8:17]
     ra1 = float(line[103:114])
     dec1 = float(line[115:126])
     ra2 = float(line[127:138])
     dec2 = float(line[139:150])
 
-    print(obsID)
+    print('{}-{}'.format(index, obsID))
     return obsID, ra1, dec1, ra2, dec2
 
 
@@ -68,11 +68,9 @@ def download_file(obsID):
                                               obs_collection='HST')
 
     # Generate the path for the FITS file
-    path = '.\mastDownload\HST\{}\{}_drc.fits'.format(obsID, obsID)
-
-    # Check if the FITS file exists
-    if os.path.isfile(path) == False:
-        print('Error: No file found at obsID {}'.format(obsID))
+    path = '.\mastDownload\HST\{}'.format(obsID)
+    fileName = os.listdir(path)[0]
+    path = '{}\{}'.format(path, fileName)
 
     return path
 
@@ -120,38 +118,52 @@ if __name__ == '__main__':
     connect_session()
 
     with open('tablea1.dat', 'r') as file:
-        # Generate a FileManager object, and configure the number of FITS file
-        # you want to store at one time on your disk
-        manager = FileManager(8)
-
-        for index, line in enumerate(file):
-            # Get the parameter (obsID and asteroid position)
-            obsID, ra1, dec1, ra2, dec2 = get_par(line)
-
-            # Download FITS file, and get the path
-            path = download_file(obsID)
-
-            # Acquire the data, and convert the coordinate system for asteroid position
-            data, x1, y1, x2, y2 = convert_world2pix(
-                path, ra1, dec1, ra2, dec2)
-
-            # Save the data and position to .npz file
-            save_data(obsID, index, data, x1, y1, x2, y2)
-
-            # Plot the data and save the figure to a jpg file
-            plot_data(data, obsID, index, x1, y1, x2, y2)
-
-            # Check which file to delete in this iteration
-            fileNameDelete = manager.update_list(obsID)
-
-            # Delete the directory if expected
-            if fileNameDelete != 0:
-                delete_dir(fileNameDelete)
-
-            # Finished!
-            print('{} finished!'.format(obsID))
-
-            # Stop the code
-            if index > 99:
-                break
+        lines = file.readlines()
     file.close()
+
+    # Generate a FileManager object, and configure the number of FITS file
+    # you want to store at one time on your disk
+    manager = FileManager(8)
+
+    # Configure the number of start line (which is the index for file names)
+    index = 122
+    lines = lines[index:]
+
+    for line in lines:
+        # Get the parameter (obsID and asteroid position)
+        obsID, ra1, dec1, ra2, dec2 = get_par(line, index)
+
+        # Check which file to delete in this iteration
+        fileNameDelete = manager.update_list(obsID)
+
+        # Delete the directory if expected
+        if fileNameDelete != 0:
+            delete_dir(fileNameDelete)
+
+        # Download FITS file, and get the path
+        path = download_file(obsID)
+
+        # Check if the FITS file exists
+        if os.path.isfile(path) == False:
+            print('Error: No file found for {}-{}'.format(index, obsID))
+            index += 1
+            continue
+
+        # Acquire the data, and convert the coordinate system for asteroid position
+        data, x1, y1, x2, y2 = convert_world2pix(path, ra1, dec1, ra2, dec2)
+
+        # Save the data and position to .npz file
+        save_data(obsID, index, data, x1, y1, x2, y2)
+
+        # Plot the data and save the figure to a jpg file
+        plot_data(data, obsID, index, x1, y1, x2, y2)
+
+        # Finished!
+        print('{}-{} finished!'.format(index, obsID))
+
+        # Increase the index by one
+        index += 1
+
+        # Stop the code
+        if index > 200:
+            break
