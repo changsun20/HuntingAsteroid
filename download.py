@@ -41,14 +41,14 @@ def convert_world2pix(path, ra1, dec1, ra2, dec2):
 
 
 # Plot a draft of data, with red box pointing out the asteroid
-def plot_data(data, obsID, num, x1, y1, x2, y2):
+def plot_data(data, obsID, index, x1, y1, x2, y2):
     plt.imshow(data, cmap='gray', vmin=0.0, vmax=0.01)
     plt.plot([x1, x2], [y1, y1], 'r')
     plt.plot([x1, x2], [y2, y2], 'r')
     plt.plot([x1, x1], [y1, y2], 'r')
     plt.plot([x2, x2], [y1, y2], 'r')
     plt.colorbar()
-    plt.savefig('.\pic\{}-{}.jpg'.format(num, obsID), dpi=300)
+    plt.savefig('.\pic\{}-{}.jpg'.format(index, obsID), dpi=300)
     plt.clf()
 
 
