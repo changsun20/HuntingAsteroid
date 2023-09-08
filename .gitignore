@@ -159,9 +159,11 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# For this repository
+# For this repository, ignore these paths:
 data/
+data_preprocess/
 pic/
+pic_preprocess/
 mastDownload/
 
 # LaTex
