@@ -60,27 +60,27 @@ def data_position_refresh(data, window_shape_value, position, window_position):
     return data_refresh, position_refresh
 
 
-def plot_data(name, data, box_position):
-    x1, y1, x2, y2 = box_position
+def plot_data(name, data, box_position, pic_path):
+    x1, y1, x2, y2 = box_position    
     plt.imshow(data, cmap='gray', vmin=0, vmax=0.01)
     plt.plot([x1, x2], [y1, y1], 'r')
     plt.plot([x1, x2], [y2, y2], 'r')
     plt.plot([x1, x1], [y1, y2], 'r')
     plt.plot([x2, x2], [y1, y2], 'r')
     plt.colorbar()
-    plt.savefig('.\pic_preprocess\{}.jpg'.format(name), dpi=300)
+    plt.savefig('{}\{}.jpg'.format(pic_path, name), dpi=300)
     plt.clf()
 
 
 # Save the data and asteroid position into a npz file
-def save_data(name, index, data, position):
+def save_data(name, index, data, position, data_path):
     matrix2 = np.array(position)
-    dataPath = '.\data_preprocess\{}'.format(name)
+    dataPath = '{}\{}'.format(data_path, name)
     np.savez(dataPath, matrix1=data, matrix2=matrix2)
     print('Successfully save data for {}: {}'.format(index, name))
 
 
-def preprocess(father_dir, start_index, end_index, random_slide=300, window_shape_value=1000):
+def preprocess(father_dir, pic_path, data_path, start_index, end_index, random_slide=300, window_shape_value=1000):
     for index in range(start_index, end_index+1):
         path, name = path_of_data(father_dir, index)
         print('Start preprocessing {}: {}'.format(index, name))
@@ -92,9 +92,9 @@ def preprocess(father_dir, start_index, end_index, random_slide=300, window_shap
             image_shape, center_position, random_slide, window_shape_value)
         data_refresh, position_refresh = data_position_refresh(
             data, window_shape_value, position, window_position)
-        plot_data(name, data_refresh, position_refresh)
-        save_data(name, index, data_refresh, position_refresh)
+        plot_data(name, data_refresh, position_refresh, pic_path)
+        save_data(name, index, data_refresh, position_refresh, data_path)
 
 
 if __name__ == '__main__':
-    preprocess('.\data', 0, 0, 300, 1000)
+    preprocess('.\data', '.\pic_positive', '.\\preprocess\\train\\positive', 0, 10, 300, 1000)

@@ -161,9 +161,10 @@ cython_debug/
 
 # For this repository, ignore these paths:
 data/
-data_preprocess/
+preprocess/
 pic/
-pic_preprocess/
+pic_positive/
+pic_negative/
 mastDownload/
 
 # LaTex
