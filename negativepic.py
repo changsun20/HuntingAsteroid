@@ -33,7 +33,7 @@ def plot_data_negative(name, count, data, pic_dir):
 def generate_negative_data(father_dir, pic_dir, data_dir, start_index, end_index, window_shape_value=1000):
     count = 0
 
-    for index in range(start_index, end_index+1):
+    for index in range(start_index, end_index):
         path, name = prep.path_of_data(father_dir, index)
         print('Start preprocessing {}: {}'.format(index, name))
         data, position = prep.load_saved_data(path)
@@ -50,8 +50,22 @@ def generate_negative_data(father_dir, pic_dir, data_dir, start_index, end_index
                 count += 1
 
 
+def random_split(dir_train, dir_val):
+    fileList = os.listdir(dir_train)
+    for file in fileList:
+        train_file = os.path.join(dir_train, file)
+        val_file = os.path.join(dir_val, file)
+        if random.random() < 0.2:
+            shutil.move(train_file, val_file)
+            print('File move from {} to {}'.format(train_file, val_file))
+        else:
+            print('File does not move')
+
+
 if __name__ == '__main__':
     generate_negative_data('.\data',
                            '.\pic_negative',
                            '.\\preprocess\\train\\negative',
                            0, 10, 1000)
+    random_split('.\\preprocess\\train\\negative',
+                 '.\\preprocess\\val\\negative')

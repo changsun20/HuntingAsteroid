@@ -61,7 +61,7 @@ def data_position_refresh(data, window_shape_value, position, window_position):
 
 
 def plot_data(name, data, box_position, pic_dir):
-    x1, y1, x2, y2 = box_position    
+    x1, y1, x2, y2 = box_position
     plt.imshow(data, cmap='gray', vmin=0, vmax=0.01)
     plt.plot([x1, x2], [y1, y1], 'r')
     plt.plot([x1, x2], [y2, y2], 'r')
@@ -81,7 +81,7 @@ def save_data(name, index, data, position, data_dir):
 
 
 def preprocess(father_dir, pic_dir, data_dir, start_index, end_index, random_slide=300, window_shape_value=1000):
-    for index in range(start_index, end_index+1):
+    for index in range(start_index, end_index):
         path, name = path_of_data(father_dir, index)
         print('Start preprocessing {}: {}'.format(index, name))
         data, position = load_saved_data(path)
@@ -96,8 +96,22 @@ def preprocess(father_dir, pic_dir, data_dir, start_index, end_index, random_sli
         save_data(name, index, data_refresh, position_refresh, data_dir)
 
 
+def random_split(dir_train, dir_val):
+    fileList = os.listdir(dir_train)
+    for file in fileList:
+        train_file = os.path.join(dir_train, file)
+        val_file = os.path.join(dir_val, file)
+        if random.random() < 0.2:
+            shutil.move(train_file, val_file)
+            print('File move from {} to {}'.format(train_file, val_file))
+        else:
+            print('File does not move')
+
+
 if __name__ == '__main__':
     preprocess('.\data',
                '.\pic_positive',
                '.\\preprocess\\train\\positive',
-               0, 10, 300, 1000)
+               0, 120, 300, 1000)
+    random_split('.\\preprocess\\train\\positive',
+                 '.\\preprocess\\val\\positive')
