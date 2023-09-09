@@ -166,6 +166,7 @@ pic/
 pic_positive/
 pic_negative/
 mastDownload/
+*.zip
 
 # LaTex
 .texpadtmp
