@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 import preprocess as prep
+import os
+import shutil
 
 
 # Calculate the corner point of the picture
@@ -33,6 +35,35 @@ def plot_data_negative(name, count, data, pic_dir):
     plt.clf()
 
 
+# Find the posible negative pictures
+def find_region(data, corner, window_shape_value, name, index, count, data_dir, pic_dir):
+    x_min, y_min, x_max, y_max = corner
+
+    x_final = []
+    y_final = []
+
+    if x_min > window_shape_value+500:
+        x_final.append(random.randint(0, x_min - window_shape_value - 300))
+
+    if (4000 - x_max) > window_shape_value+500:
+        x_final.append(random.randint(x_max+300, 4000 - window_shape_value))
+
+    if y_min > window_shape_value+500:
+        y_final.append(random.randint(0, y_min - window_shape_value - 300))
+
+    if (4000 - y_max) > window_shape_value+500:
+        y_final.append(random.randint(y_max+300, 4000 - window_shape_value))
+
+    if x_final == [] or y_final == []:
+        return 0
+
+    for i in x_final:
+        for j in y_final:
+            data_new = data_refresh(data, i, j, window_shape_value)
+            save_data_negative(name, index, count, data_new, data_dir)
+            plot_data_negative(name, count, data_new, pic_dir)
+
+
 # Wrap it up
 def generate_negative_data(father_dir, pic_dir, data_dir, start_index, end_index, window_shape_value=1000):
     # Count the number of accepted negative picture
@@ -51,19 +82,12 @@ def generate_negative_data(father_dir, pic_dir, data_dir, start_index, end_index
         data = np.nan_to_num(data)
 
         # Calculate the corner of the asteroid trail
-        x_corner, y_corner = corner_point(position)
+        corner = corner_point(position)
 
         # Check if we can use this image to generate a negative picture.
         # If so, randomly pick two pictures with no asteroid trails.
-        if x_corner > window_shape_value+500 and y_corner > window_shape_value+500:
-            for i in range(2):
-                x_final = random.randint(0, x_corner - window_shape_value)
-                y_final = random.randint(0, y_corner - window_shape_value)
-                data_new = data_refresh(
-                    data, x_final, y_final, window_shape_value)
-                save_data_negative(name, index, count, data_new, data_dir)
-                plot_data_negative(name, count, data_new, pic_dir)
-                count += 1
+        find_region(data, corner, window_shape_value,
+                    name, index, count, data_dir, pic_dir)
 
 
 # Randomly split the data set to train and validation. We choose a 80/20 split.
@@ -81,10 +105,10 @@ def random_split(dir_train, dir_val):
 
 # Main Function
 if __name__ == '__main__':
-    generate_negative_data('.\data', 
-                           '.\pic_negative', 
-                           '.\\preprocess\\train\\negative', 
-                           start_index=0, end_index=560, 
+    generate_negative_data('.\data',
+                           '.\pic_negative',
+                           '.\\preprocess\\train\\negative',
+                           start_index=0, end_index=560,
                            window_shape_value=1000)
-    random_split('.\\preprocess\\train\\negative', 
+    random_split('.\\preprocess\\train\\negative',
                  '.\\preprocess\\val\\negative')
