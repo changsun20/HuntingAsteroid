@@ -166,6 +166,9 @@ pic/
 pic_positive/
 pic_negative/
 mastDownload/
+model/
+log/
+*.pt
 *.zip
 
 # LaTex
