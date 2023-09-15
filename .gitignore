@@ -167,7 +167,6 @@ pic_positive/
 pic_negative/
 mastDownload/
 *.zip
-model/
 
 # LaTex
 .texpadtmp
@@ -178,7 +177,6 @@ draft*.pdf
 *.aux
 *.bbl
 *.blg
-*.log
 *.synctex.gz
 *.fls
 *.fdb_latexmk
