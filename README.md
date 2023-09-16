@@ -1,6 +1,6 @@
 ## Description
 
-We propose implementing deep learning in the detection process of asteroid. Using data gathered from Hubble Space Telescope archive, we generate a dataset with around 3000 pictures. Then we tine-tune a pretrained model and design an automatic processing pipeline for the data.
+We propose implementing deep learning in the detection process of asteroids. Using data gathered from Hubble Space Telescope archive, we generate a dataset with around 3000 pictures. Then we tine-tune a pretrained model (previously trained on ImageNet) and design an automatic processing pipeline for the data.
 
 
 ## Prerequisites
@@ -15,7 +15,7 @@ Additionally, we use some packages that's specially designed for astronomy, whic
 About the function of the file:
 
 - download.ipynb: download Hubble data from MAST archive
-- preprocess.ipynb: generate "positive" class pictures with asteroid trails
+- positive.ipynb: generate "positive" class pictures with asteroid trails
 - negavite.ipynb: generate "negative" class pictures without asteroid trails
 - fine-tune.ipynb: build up and train the model
 
