@@ -26,11 +26,11 @@ Thanks for the Hubble Asteroid Hunter citizen science project and the data they 
 
 This is our method to generate the training data:
 
-![](.\pictures\preprocess.png)
+![](pictures/preprocess.png)
 
 We implement fine-tuning techniques to the classification task. This is how we build up the model:
 
-![](.\pictures\fine-tune.png)
+![](pictures/fine-tune.png)
 
 
 ## Current Results
