@@ -168,7 +168,7 @@ pic_negative/
 mastDownload/
 model/
 log/
-*.pt
+weights/
 *.zip
 
 # LaTex
