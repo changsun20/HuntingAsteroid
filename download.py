@@ -8,13 +8,13 @@ import os
 import shutil
 
 
-# read the FITS file, return the data and WCS object
+# read the FITS file, return the data and WCS object 
 def read_fits(fileName):
     hdulist = fits.open(fileName)
     data = hdulist[1].data
     wcs = WCS(hdulist[1].header)
     hdulist.close()
-
+    
     return data, wcs
 
 
@@ -25,7 +25,7 @@ def get_par(line, index):
     dec1 = float(line[115:126])
     ra2 = float(line[127:138])
     dec2 = float(line[139:150])
-
+    
     print('{}-{}'.format(index, obsID))
     return obsID, ra1, dec1, ra2, dec2
 
