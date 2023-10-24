@@ -40,7 +40,7 @@ Up to now, we achieved a best accuracy of 92.24% and recall of 91.25% when fine-
 
 ## How to contribute
 
-If you like our idea, please feel free to star or fork our repository, and send pull requests. You may also contact the author by sending emails to changsun@diroot.org
+If you like our idea, please feel free to star or fork our repository and send pull requests. You may also contact the author by sending emails to changsun@diroot.org
 
 ## References
 
